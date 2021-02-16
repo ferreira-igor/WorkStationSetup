@@ -13,7 +13,7 @@ sudo apt update
 
 echo "Instalando aplicativos..."
 
-sudo apt install lsb build-essential libssl-dev git-all python3-all idle thonny esptool mint-meta-codecs fonts-noto fonts-roboto kicad gimp inkscape -y
+sudo apt install lsb tlp tlp-rdw build-essential git-all python3-all idle thonny esptool mint-meta-codecs exfat-fuse exfat-utils fonts-noto fonts-roboto gimp inkscape kicad audacity -y
 
 echo "Instalando bloqueador de anúncios..."
 
