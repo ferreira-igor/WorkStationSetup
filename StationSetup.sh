@@ -54,7 +54,7 @@ sudo hblock
 echo "Atualizando o sistema..."
 
 sudo apt update
-sudo apt dist-upgrade -y
+sudo apt full-upgrade -y
 sudo apt autoclean -y
 sudo apt autoremove -y
 
