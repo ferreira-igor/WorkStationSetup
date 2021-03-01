@@ -1,5 +1,3 @@
 # WorkStationSetup
 
-## Descrição
-
-Shel script de pós instalação para uso pessoal;
+Post install shell script for personal use.
