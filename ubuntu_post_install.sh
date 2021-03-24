@@ -33,6 +33,20 @@ Pin: origin *
 Pin-Priority: -1
 EOF
 
+## ADIÇÃO DE REPOSITÓRIOS DE TERCEIROS ##
+
+wget -qO - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+
+wget -qO - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+
+wget -qO - https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add - 
+echo "deb [arch=amd64] http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
+echo "deb [arch=amd64] http://apt.insync.io/ubuntu focal non-free contrib" | sudo tee /etc/apt/sources.list.d/insync.list
+
 ## REMOÇÃO DE EVENTUAIS TRAVAS DO APT ##
 
 sudo rm /var/lib/dpkg/lock-frontend
@@ -44,11 +58,53 @@ sudo apt update
 
 ## INSTALAÇÃO DOS APLICATIVOS ##
 
-sudo apt install synaptic build-essential git-all python3-all python3-extras idle thonny esptool cutecom putty p7zip-full unrar curl lsb tlp exfat-fuse numlockx zram-config gnome-boxes gnome-tweaks timeshift usb-creator-gtk thunderbird totem rhythmbox ubuntu-restricted-addons vlc qwinff fonts-noto fonts-roboto kicad freecad librecad gimp inkscape filezilla -y
+apps_list = (
+    synaptic
+    build-essential
+    git-all
+    python3-all
+    python3-extras
+    idle
+    thonny
+    esptool
+    cutecom
+    putty
+    p7zip-full
+    unrar
+    curl
+    lsb
+    tlp
+    exfat-fuse
+    zram-config
+    gnome-boxes
+    gnome-tweaks
+    timeshift
+    ubuntu-restricted-addons
+    totem
+    rhythmbox
+    vlc
+    qwinff
+    fonts-noto
+    fonts-roboto
+    kicad
+    freecad
+    librecad
+    gimp
+    inkscape
+    google-chrome-stable
+    code
+    spotify-client
+    insync
+    insync-nautilus
+    )
 
-## ADIÇÃO DO USUÁRIO AO GRUPO DIALOUT ##
-
-sudo usermod -a -G dialout $USER
+for app_name in ${apps_list[@]}; do
+    if ! dpkg -l | grep -q $app_name; then
+        sudo apt install "$app_name" -y
+    else
+        echo "[INSTALADO] - $app_name"
+    fi
+done
 
 ## INSTALAÇÃO DO BLOQUEADOR DE ANÚNCIOS ##
 
@@ -68,6 +124,10 @@ sudo chmod 644 /etc/systemd/system/hblock.{service,timer}
 sudo systemctl daemon-reload
 sudo systemctl enable hblock.timer
 sudo systemctl start hblock.timer
+
+## ADIÇÃO DO USUÁRIO AO GRUPO DIALOUT ##
+
+sudo usermod -a -G dialout $USER
 
 ## ATUALIZAÇÃO DO SISTEMA ##
 
